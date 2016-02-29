@@ -1,0 +1,74 @@
+---
+title       : Predicting Predominant Forest Cover
+subtitle    : Roosevelt National Forest, Northern Colorado
+author      : Srijit Chandrashekhar Nair 
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Overview
+
+This application predicts the forest cover type of a wilderness area in the Roosevelt National Park, northern Colorado.It is a prediction using Cartographic Variables (not based on satelite imagery) and is based on the parameters that you select in "Input Values" section in the left side panel.
+
+This is based on the Kaggle competition "Forest Cover Type Prediction" (https://www.kaggle.com/c/forest-cover-type-prediction)
+
+--- .class #id 
+
+## Inputs
+
+The input data includes:
+ * Elevation
+ * Aspect
+ * Slope
+ * Horizontal Distance To Hydrology
+ * Vertical Distance To Hydrology
+ * Horizontal Distance To Roadways
+ * Hillshade 9am (0 to 255 index)
+ * Hillshade Noon (0 to 255 index)
+ * Hillshade 3pm (0 to 255 index)
+ * Horizontal Distance To Fire Points
+ * Wilderness Area
+ * Soil Type
+
+--- .class #id 
+
+## Output
+
+Output predicts the type of forest cover which will be one of
+
+ * Spruce/Fir
+ * Lodgepole Pine
+ * Ponderosa Pine
+ * Cottonwood/Willow
+ * Aspen
+ * Douglas-fir
+ * Krummholz
+
+--- .class #id 
+
+## How it works
+
+This program loads the Kaggle training set from https://www.kaggle.com/c/forest-cover-type-prediction/data and makes Gradient Bost model using Caret library.
+
+Thanks to the R script by Apurva Dubey at Kaggle (https://www.kaggle.com/apurvadubey/forest-cover-type-prediction/r-starter-code), a modified version of which was used for this product. 
+
+A sample from the training set is shown below
+
+```{r echo=FALSE}
+train<-read.csv("train.csv")
+str(train)
+
+```
+
+--- .class #id
+
+## How to use
+
+Access the application here https://srijitcnair.shinyapps.io/forestCover/ and use the documentation from https://srijitcnair.shinyapps.io/aboutForestCover/ 
+
+Thank you !

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predicting Predominant Forest Cover</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Predicting Predominant Forest Cover">
+  <meta name="author" content="Srijit Chandrashekhar Nair">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Predicting Predominant Forest Cover</h1>
+    <h2>Roosevelt National Forest, Northern Colorado</h2>
+    <p>Srijit Chandrashekhar Nair<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Overview</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This application predicts the forest cover type of a wilderness area in the Roosevelt National Park, northern Colorado.It is a prediction using Cartographic Variables (not based on satelite imagery) and is based on the parameters that you select in &quot;Input Values&quot; section in the left side panel.</p>
+
+<p>This is based on the Kaggle competition &quot;Forest Cover Type Prediction&quot; (<a href="https://www.kaggle.com/c/forest-cover-type-prediction">https://www.kaggle.com/c/forest-cover-type-prediction</a>)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Inputs</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The input data includes:</p>
+
+<ul>
+<li>Elevation</li>
+<li>Aspect</li>
+<li>Slope</li>
+<li>Horizontal Distance To Hydrology</li>
+<li>Vertical Distance To Hydrology</li>
+<li>Horizontal Distance To Roadways</li>
+<li>Hillshade 9am (0 to 255 index)</li>
+<li>Hillshade Noon (0 to 255 index)</li>
+<li>Hillshade 3pm (0 to 255 index)</li>
+<li>Horizontal Distance To Fire Points</li>
+<li>Wilderness Area</li>
+<li>Soil Type</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Output</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Output predicts the type of forest cover which will be one of</p>
+
+<ul>
+<li>Spruce/Fir</li>
+<li>Lodgepole Pine</li>
+<li>Ponderosa Pine</li>
+<li>Cottonwood/Willow</li>
+<li>Aspen</li>
+<li>Douglas-fir</li>
+<li>Krummholz</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How it works</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This program loads the Kaggle training set from <a href="https://www.kaggle.com/c/forest-cover-type-prediction/data">https://www.kaggle.com/c/forest-cover-type-prediction/data</a> and makes Gradient Bost model using Caret library.</p>
+
+<p>Thanks to the R script by Apurva Dubey at Kaggle (<a href="https://www.kaggle.com/apurvadubey/forest-cover-type-prediction/r-starter-code">https://www.kaggle.com/apurvadubey/forest-cover-type-prediction/r-starter-code</a>), a modified version of which was used for this product. </p>
+
+<p>A sample from the training set is shown below</p>
+
+<pre><code>## &#39;data.frame&#39;:    15120 obs. of  56 variables:
+##  $ Id                                : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Elevation                         : int  2596 2590 2804 2785 2595 2579 2606 2605 2617 2612 ...
+##  $ Aspect                            : int  51 56 139 155 45 132 45 49 45 59 ...
+##  $ Slope                             : int  3 2 9 18 2 6 7 4 9 10 ...
+##  $ Horizontal_Distance_To_Hydrology  : int  258 212 268 242 153 300 270 234 240 247 ...
+##  $ Vertical_Distance_To_Hydrology    : int  0 -6 65 118 -1 -15 5 7 56 11 ...
+##  $ Horizontal_Distance_To_Roadways   : int  510 390 3180 3090 391 67 633 573 666 636 ...
+##  $ Hillshade_9am                     : int  221 220 234 238 220 230 222 222 223 228 ...
+##  $ Hillshade_Noon                    : int  232 235 238 238 234 237 225 230 221 219 ...
+##  $ Hillshade_3pm                     : int  148 151 135 122 150 140 138 144 133 124 ...
+##  $ Horizontal_Distance_To_Fire_Points: int  6279 6225 6121 6211 6172 6031 6256 6228 6244 6230 ...
+##  $ Wilderness_Area1                  : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Wilderness_Area2                  : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Wilderness_Area3                  : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Wilderness_Area4                  : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type1                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type2                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type3                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type4                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type5                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type6                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type7                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type8                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type9                        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type10                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type11                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type12                       : int  0 0 1 0 0 0 0 0 0 0 ...
+##  $ Soil_Type13                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type14                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type15                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type16                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type17                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type18                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type19                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type20                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type21                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type22                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type23                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type24                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type25                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type26                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type27                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type28                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type29                       : int  1 1 0 0 1 1 1 1 1 1 ...
+##  $ Soil_Type30                       : int  0 0 0 1 0 0 0 0 0 0 ...
+##  $ Soil_Type31                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type32                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type33                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type34                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type35                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type36                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type37                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type38                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type39                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Soil_Type40                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Cover_Type                        : int  5 5 2 2 5 2 5 5 5 5 ...
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How to use</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Access the application here <a href="https://srijitcnair.shinyapps.io/forestCover/">https://srijitcnair.shinyapps.io/forestCover/</a> and use the documentation from <a href="https://srijitcnair.shinyapps.io/aboutForestCover/">https://srijitcnair.shinyapps.io/aboutForestCover/</a> </p>
+
+<p>Thank you !</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Overview'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Inputs'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Output'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='How it works'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='How to use'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
